@@ -22,7 +22,6 @@ var (
 	ignoreerror = flag.Bool("f", false, "ignore corrupt records")
 	thl         = flag.Int("t", 12, "thread limit")
 	barosat     = flag.Float64("b", 0.5, "barometer gps alt ratio to use at specified satelite count")
-	satcount    = flag.Int("s", 9, "max satelite count") // not implemented right now
 )
 
 const (
