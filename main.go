@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 
 	"edgetx-to-kml/layout"
@@ -20,7 +21,8 @@ var (
 	altadd      = flag.Int("a", 0, "add this to Altitudes")
 	ignoreerror = flag.Bool("f", false, "ignore corrupt records")
 	thl         = flag.Int("t", 12, "thread limit")
-	barosat     = flag.Float64("b", 0.5, "barometer gps alt ratio")
+	barosat     = flag.Float64("b", 0.5, "barometer gps alt ratio to use at specified satelite count")
+	satcount    = flag.Int("s", 9, "max satelite count") // not implemented right now
 )
 
 const (
@@ -126,16 +128,16 @@ func main() {
 
 	processed := processRecords(okrecords)
 	var place []kml.Element
-	/*
-		for k, v := range parsed {
-			place = append(place, kml.Placemark(
-				kml.Name(strconv.Itoa(k)),
-				kml.Point(
-					kml.Coordinates(kml.Coordinate{Lon: v.gps.lon, Lat: v.gps.lat}),
-				),
-			))
-		}
-	*/
+	var points []kml.Element
+	for k, v := range parsed {
+		points = append(points, kml.Placemark(
+			kml.Name(strconv.Itoa(k)),
+			kml.Point(
+				kml.Coordinates(kml.Coordinate{Lon: v.gps.lon, Lat: v.gps.lat, Alt: v.alt}),
+			),
+		))
+	}
+	place = append(place, kml.Folder(points...))
 	place = append(place, kml.Placemark(
 		kml.Name("line"),
 		kml.LineString(
@@ -150,7 +152,6 @@ func main() {
 			})...),
 		),
 	))
-
 	k := kml.KML(kml.Document(place...))
 	ofd, err := os.Create("out.kml")
 	if err != nil {
