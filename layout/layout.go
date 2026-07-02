@@ -9,13 +9,13 @@ type Layout struct {
 }
 
 var (
-	date = flag.String("ld", "Date", "log file to convert from")
-	sats = flag.String("ls", "Sats", "log file to convert from")
-	time = flag.String("lt", "Time", "log file to convert from")
-	gps  = flag.String("lg", "GPS", "log file to convert from")
-	alt  = flag.String("la", "Alt(m)", "log file to convert from")
-	baro = flag.String("lb", "Alt2(m)", "log file to convert from")
-	mode = flag.String("lm", "FM", "log file to convert from")
+	date = flag.String("ld", "Date", "data in header")
+	sats = flag.String("ls", "Sats", "satelite count in header")
+	time = flag.String("lt", "Time", "time in header")
+	gps  = flag.String("lg", "GPS", "gps cordinates in header")
+	alt  = flag.String("la", "Alt(m)", "gps altitude in header")
+	baro = flag.String("lb", "Alt2(m)", "barometer altitude in header")
+	mode = flag.String("lm", "FM", "flight mode in header")
 )
 
 func GetLayout(header []string) (r Layout) {

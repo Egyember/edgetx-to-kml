@@ -22,6 +22,7 @@ var (
 	ignoreerror = flag.Bool("f", false, "ignore corrupt records")
 	thl         = flag.Int("t", 12, "thread limit")
 	barosat     = flag.Float64("b", 0.5, "barometer gps alt ratio to use at specified satelite count")
+	lastx       = flag.Int("l", 0, "only export after the Nth point")
 )
 
 const (
@@ -126,6 +127,7 @@ func main() {
 	}
 
 	processed := processRecords(okrecords)
+	processed = processed[*lastx:]
 	var place []kml.Element
 	var points []kml.Element
 	for k, v := range parsed {
