@@ -112,6 +112,9 @@ func main() {
 		error
 	},
 	) bool {
+		if r.error != nil {
+			fmt.Println(r.error)
+		}
 		return r.error == nil
 	}), func(r struct {
 		Record
@@ -143,7 +146,7 @@ func main() {
 		kml.Name("line"),
 		kml.LineString(
 			kml.Extrude(false),
-			kml.Tessellate(true),
+			kml.Tessellate(false),
 			kml.AltitudeMode(kml.AltitudeModeAbsolute),
 			kml.Coordinates(fs.Map(processed, func(p Record) (r kml.Coordinate) {
 				r.Lat = p.gps.lat
